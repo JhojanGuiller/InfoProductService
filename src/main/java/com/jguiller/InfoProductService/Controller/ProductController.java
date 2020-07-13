@@ -22,7 +22,7 @@ public class ProductController {
 	@PostMapping("/addProduct")
 	public String saveProduct(@RequestBody Product prod) {
 		prodRepository.save(prod);
-		return "Product add successfully: " + prod.getId();
+		return "Product add successfully: " + prod.getIdProducto();
 	}
 	
 	@GetMapping("/findAllProducts")
@@ -30,15 +30,15 @@ public class ProductController {
 		return prodRepository.findAll();
 	}
 	
-	@GetMapping("/findProduct/{id}")
-	public Optional<Product> getProduct(@PathVariable int id) {
-		return prodRepository.findById(id);
+	@GetMapping("/findProduct/{idProducto}")
+	public Optional<Product> getProduct(@PathVariable int idProducto) {
+		return prodRepository.findByIdProducto(idProducto);
 	}
 	
-	@GetMapping("/deleteProduct/{id}")
-	public String deleteProduct(@PathVariable int id) {
-		prodRepository.deleteById(id);
-		return "Deleted product successfully: " + id;
+	@GetMapping("/deleteProduct/{idProducto}")
+	public String deleteProduct(@PathVariable int idProducto) {
+		prodRepository.deleteByIdProducto(idProducto);
+		return "Deleted product successfully: " + idProducto;
 	}
 
 }

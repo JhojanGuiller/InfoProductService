@@ -12,19 +12,19 @@ public class Product {
 	@Id
 	@NotNull
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private int idProducto;
 	
 	private String tipoProducto;
 	private String producto;
 	
 	public Product() {	}
 
-	public int getId() {
-		return id;
+	public int getIdProducto() {
+		return idProducto;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setIdProducto(int idProducto) {
+		this.idProducto = idProducto;
 	}
 
 	public String getTipoProducto() {
@@ -43,9 +43,9 @@ public class Product {
 		this.producto = producto;
 	}
 
-	public Product(@NotNull int id, String tipoProducto, String producto) {
+	public Product(@NotNull int idProducto, String tipoProducto, String producto) {
 		super();
-		this.id = id;
+		this.idProducto = idProducto;
 		this.tipoProducto = tipoProducto;
 		this.producto = producto;
 	}
