@@ -1,0 +1,15 @@
+mongodb:
+ image: mongo:latest
+ restart: always
+ container_name: "mongodb"
+ ports:
+  - "27017:27017"
+
+infoproductservice:
+ build: .
+ dockerfile: Dockerfile
+ container_name: infoproductservice
+ ports: 
+  - "8082:8080"
+ links:
+  - mongodb
