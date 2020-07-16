@@ -1,7 +1,6 @@
 package com.jguiller.InfoProductService.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jguiller.InfoProductService.Model.Product;
-import com.jguiller.InfoProductService.Repository.ProductRepository;
+import com.jguiller.InfoProductService.Service.ProductService;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -23,44 +22,36 @@ import reactor.core.publisher.Mono;
 public class ProductController {
 	
 	@Autowired
-	private ProductRepository prodRepository;
-	
-	private ResponseEntity<Product> notFound = ResponseEntity.notFound().build();
+	private ProductService productService;
 	
 	// OBTENER TODOS LOS PRODUCTOS
 	@GetMapping
 	public Flux<Product> getProducts(){
-		return prodRepository.findAll();
+		return productService.getAllProducts();
 	}
 	
-	// CREAR UN PRODUCTO
+	// AGREGAR UN PRODUCTO
 	@PostMapping("/addProduct")
 	public Mono<Product> createProduct(@RequestBody Product product) {
-		return prodRepository.save(product);
+		return productService.addProduct(product);
 	}
 	
 	// OBTENER UN PRODUCTO POR SU ID
 	@GetMapping("/{idProducto}")
-	public Mono<ResponseEntity<Product>> getProductById(@PathVariable(value = "idProducto") int id) {
-		return prodRepository.findById(id)
-				.map(producto -> new ResponseEntity<Product>(producto, HttpStatus.OK))
-				.defaultIfEmpty(notFound);
+	public Mono<ResponseEntity<Product>> getProductoById(@PathVariable(value = "idProducto") int id) {
+		return productService.getProductById(id);
 	}
 	
 	// EDITAR UN PRODUCTO POR ID
 	@PutMapping("/updateProduct/{idProducto}")
-	public Mono<ResponseEntity<Product>> updateProduct(@RequestBody Product product, @PathVariable(value = "idProducto") int id) {
-		return prodRepository.findById(id).flatMap(prod -> {
-			prod.setTipoProducto(product.getTipoProducto());
-			prod.setProducto(product.getProducto());
-			return prodRepository.save(prod);
-		}).map(prod1 -> new ResponseEntity<Product>(prod1, HttpStatus.OK)).defaultIfEmpty(notFound);
+	public Mono<ResponseEntity<Product>> updateProducto(@RequestBody Product product, @PathVariable(value = "idProducto") int id) {
+		return productService.updateProduct(product, id);
 	}
 	
 	// ELIMINAR UN PRODUCTO POR ID
 	@DeleteMapping("/deleteProduct/{idProducto}")
 	public Mono<Void> deleteProductById(@PathVariable(value = "idProducto") int id) {
-		return prodRepository.deleteById(id);
+		return productService.deleteProduct(id);
 	}
 
 }
