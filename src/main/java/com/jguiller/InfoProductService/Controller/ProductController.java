@@ -1,44 +1,66 @@
 package com.jguiller.InfoProductService.Controller;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jguiller.InfoProductService.Model.Product;
 import com.jguiller.InfoProductService.Repository.ProductRepository;
 
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 @RestController
+@RequestMapping("/products")
 public class ProductController {
 	
 	@Autowired
 	private ProductRepository prodRepository;
 	
-	@PostMapping("/addProduct")
-	public String saveProduct(@RequestBody Product prod) {
-		prodRepository.save(prod);
-		return "Product add successfully: " + prod.getIdProducto();
-	}
+	private ResponseEntity<Product> notFound = ResponseEntity.notFound().build();
 	
-	@GetMapping("/findAllProducts")
-	public List<Product> getProducts(){
+	// OBTENER TODOS LOS PRODUCTOS
+	@GetMapping
+	public Flux<Product> getProducts(){
 		return prodRepository.findAll();
 	}
 	
-	@GetMapping("/findProduct/{idProducto}")
-	public Optional<Product> getProduct(@PathVariable int idProducto) {
-		return prodRepository.findByIdProducto(idProducto);
+	// CREAR UN PRODUCTO
+	@PostMapping("/addProduct")
+	public Mono<Product> createProduct(@RequestBody Product product) {
+		return prodRepository.save(product);
 	}
 	
-	@GetMapping("/deleteProduct/{idProducto}")
-	public String deleteProduct(@PathVariable int idProducto) {
-		prodRepository.deleteByIdProducto(idProducto);
-		return "Deleted product successfully: " + idProducto;
+	// OBTENER UN PRODUCTO POR SU ID
+	@GetMapping("/{idProducto}")
+	public Mono<ResponseEntity<Product>> getProductById(@PathVariable(value = "idProducto") int id) {
+		return prodRepository.findById(id)
+				.map(producto -> new ResponseEntity<Product>(producto, HttpStatus.OK))
+				.defaultIfEmpty(notFound);
+	}
+	
+	// EDITAR UN PRODUCTO POR ID
+	@PutMapping("/updateProduct/{idProducto}")
+	public Mono<ResponseEntity<Product>> updateProduct(@RequestBody Product product, @PathVariable(value = "idProducto") int id) {
+		return prodRepository.findById(id).flatMap(prod -> {
+			prod.setTipoProducto(product.getTipoProducto());
+			prod.setProducto(product.getProducto());
+			return prodRepository.save(prod);
+		}).map(prod1 -> new ResponseEntity<Product>(prod1, HttpStatus.OK)).defaultIfEmpty(notFound);
+	}
+	
+	// ELIMINAR UN PRODUCTO POR ID
+	@DeleteMapping("/deleteProduct/{idProducto}")
+	public Mono<Void> deleteProductById(@PathVariable(value = "idProducto") int id) {
+		return prodRepository.deleteById(id);
 	}
 
 }
