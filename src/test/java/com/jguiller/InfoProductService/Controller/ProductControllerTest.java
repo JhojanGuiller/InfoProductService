@@ -87,6 +87,21 @@ public class ProductControllerTest {
 	}
 	
 	@Test
+	public void updateProductTest() {
+		
+		Product product1 = new Product(1, "Cuentas Bancarias", "Ahorro");
+		Product product2 = new Product(2, "Creditos", "A plazo fijo");
+		
+		webTestClient
+		.put()
+		.uri("/products/updateProduct/{idProducto}", product1.getIdProducto())
+		.body(Mono.just(product2), Product.class)
+		.exchange()
+		.expectStatus().isOk();
+		
+	}
+	
+	@Test
 	public void deleteProductTest() {
 		
 		Integer id = 1;
