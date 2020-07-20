@@ -1,7 +1,6 @@
 package com.jguiller.InfoProductService.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,13 +37,13 @@ public class ProductController {
 	
 	// OBTENER UN PRODUCTO POR SU ID
 	@GetMapping("/{idProducto}")
-	public Mono<ResponseEntity<Product>> getProductoById(@PathVariable(value = "idProducto") int id) {
+	public Mono<Product> getProductoById(@PathVariable(value = "idProducto") int id) {
 		return productService.getProductById(id);
 	}
 	
 	// EDITAR UN PRODUCTO POR ID
 	@PutMapping("/updateProduct/{idProducto}")
-	public Mono<ResponseEntity<Product>> updateProducto(@RequestBody Product product, @PathVariable(value = "idProducto") int id) {
+	public Mono<Product> updateProducto(@RequestBody Product product, @PathVariable(value = "idProducto") int id) {
 		return productService.updateProduct(product, id);
 	}
 	
