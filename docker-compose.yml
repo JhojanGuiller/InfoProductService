@@ -4,6 +4,8 @@ productdb:
  container_name: "productdb"
  ports:
   - "27017:27017"
+ volumes:
+  - ./Document_InfoProducts.js:/docker-entrypoint-initdb.d/Document_InfoProducts.js:ro
 
 infoproductservice:
  build: .
