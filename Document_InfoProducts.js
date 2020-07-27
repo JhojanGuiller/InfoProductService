@@ -1,6 +1,6 @@
 conn = new Mongo();
 
-db = conn.getDB("ProductService");
+db = conn.getDB("BankMicroServices");
 
 var products = [
       {
