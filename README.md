@@ -12,6 +12,12 @@ Primero se debe descargar los siguiente repositorios
 
 Ejecutarlos en el mismo orden que se descarga
 
+##EJECUTAR LISTA DE PRODUCTOS PRECARGADOS
+- Asegurarse que el servicio mongodb este corriendo
+- Ejecutar el mongo bash
+- Ingresar el siguiente comando
+ - load("<ruta>/InfoProductService/Document_InfoProducts.js")
+
 ## ESTRUCTURA DEL PRODUCTO
 {
   "IdProducto": Integer,
