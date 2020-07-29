@@ -1,20 +1,16 @@
 # MICROSERVICE PRODUCT
-Este microservicio muestra todos los productos que ofrece el banco.
+Este microservicio muestra todos los productos que ofrece un banco.
 
-## INSTALACION
-Descargar docker de https://www.docker.com/get-started
+#INSTALACION
+Este microservicio es parte de una infraestructura de microservicios y requiere la ejecucion de otro app para su funcionamiento
 
-Abrir una consola de comandos y ejecutar el siguiente comando para descargar una imagen Mongo
-- docker pull mongo
+Primero se debe descargar los siguiente repositorios
+1. https://github.com/JhojanGuiller/BankApiGateway
+2. https://github.com/JhojanGuiller/ConfigServer
+3. https://github.com/JhojanGuiller/EurekaBankService
+4. Actual repositorio
 
-Clonar este repositorio en una carpeta local
-
-En la consola de comando ingresar a la carpata donde se descargo este repositorio
-- cd <ruta>/InfoProductService
-- docker-compose up --build -d
-
-Verificar si los container se levantaron con exito
-- docker ps
+Ejecutarlos en el mismo orden que se descarga
 
 ## ESTRUCTURA DEL PRODUCTO
 {
@@ -24,21 +20,4 @@ Verificar si los container se levantaron con exito
 }
 
 ## RUTAS
-El container del microservicio esta corriendo en el puerto 8082
-
-Las rutas son las siguientes:
-
-- Obtener todos los productos [Metodo GET]
-  - http://localhost:8082/products
-
-- Obtener un producto por id [Metodo GET]
-  - http://localhost:8082/products/<id>
-
-- Agregar un producto nuevo [Metodo POST]
-  - http://localhost:8082/products/addProduct
-
-- Actualizar un producto [Metodo PUT]
-  - http://localhost:8082/products/updateProduct/<id>
-
-- Eliminar un producto [Metodo DELETE]
-  - http://localhost:8082/products/updateProduct/<id>
+Revisar el repositorio https://github.com/JhojanGuiller/BankApiGateway
